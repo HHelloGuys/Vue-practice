@@ -1,0 +1,18 @@
+server:
+  # Vue 개발 서버와 분리된 메인 백엔드 포트
+  port: 8080
+
+spring:
+  application:
+    name: ai-chat-backend
+  datasource:
+    # 비밀번호는 저장소에 기록하지 않고 ORACLE_PASSWORD 환경변수로 전달한다.
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: ${ORACLE_URL:jdbc:oracle:thin:@//localhost:1521/XEPDB1}
+    username: ${ORACLE_USERNAME:system}
+    password: ${ORACLE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      connection-timeout: 5000
+      validation-timeout: 3000
