@@ -16,3 +16,13 @@ spring:
       minimum-idle: 1
       connection-timeout: 5000
       validation-timeout: 3000
+
+ai:
+  server:
+    # eGovFramework만 FastAPI를 호출하며 Vue에는 이 주소를 노출하지 않는다.
+    base-url: ${AI_SERVER_BASE_URL:http://localhost:8000}
+
+jwt:
+  # Base64 형식의 비밀키는 실행 환경에서만 전달한다.
+  secret: ${JWT_SECRET}
+  expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}

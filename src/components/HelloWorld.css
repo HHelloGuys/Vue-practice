@@ -6,6 +6,68 @@
   box-sizing: border-box;
 }
 
+.auth-page {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #0b0d12;
+  color: #f7f7f8;
+}
+
+.auth-card {
+  position: relative;
+  width: min(400px, calc(100% - 40px));
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px;
+  border: 1px solid #2b303b;
+  border-radius: 18px;
+  background: #151922;
+}
+
+.auth-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  color: #8d95a5;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.auth-card h1,
+.auth-card p { margin: 0; }
+.auth-card p { color: #8d95a5; font-size: 13px; }
+.auth-card input {
+  padding: 13px 14px;
+  border: 1px solid #303541;
+  border-radius: 10px;
+  background: #0f1218;
+  color: #fff;
+}
+.auth-submit, .auth-switch, .logout-button { cursor: pointer; }
+.auth-submit {
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: #6759dc;
+  color: #fff;
+}
+.auth-switch { border: 0; background: transparent; color: #9f95ff; }
+.auth-error { color: #ff7d8a; font-size: 12px; }
+.logout-button {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #8d95a5;
+  font-size: 11px;
+}
+
 /* 전체 AI 채팅 화면 */
 .app {
   width: 100%;

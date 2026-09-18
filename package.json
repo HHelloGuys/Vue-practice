@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run frontend\" \"npm run ai\"",
+    "dev": "powershell -ExecutionPolicy Bypass -File backend\\run-local.ps1",
     "frontend": "vite",
     "ai": "ai\\.venv\\Scripts\\python.exe -m uvicorn ai.main:app --reload",
     "build": "vite build",
