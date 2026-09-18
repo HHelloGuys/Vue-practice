@@ -1,3 +1,7 @@
 {
-  "recommendations": ["Vue.volar"]
+  "recommendations": [
+    "Vue.volar",
+    "vscjava.vscode-java-pack",
+    "vmware.vscode-spring-boot"
+  ]
 }

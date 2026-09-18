@@ -1,11 +1,14 @@
 from fastapi import FastAPI
+from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+from ai.services.llm import LlmConnectionError, generate_answer
 
 app = FastAPI()
 
 
-# Vue 개발 서버의 요청 허용
+# 현재는 eGovFramework만 호출하지만 개발 진단을 위해 로컬 요청을 허용한다.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -31,8 +34,12 @@ def root():
 
 @app.post("/api/chat")
 def chat(request: ChatRequest):
-    print("Vue에서 받은 메시지:", request.message)
+    print("eGovFramework에서 받은 메시지:", request.message)
 
-    return {
-        "answer": f"FastAPI가 받은 메시지입니다: {request.message}"
-    }
+    try:
+        # 실제 답변은 API Key가 필요 없는 로컬 Ollama 모델에서 생성한다.
+        return {
+            "answer": generate_answer(request.message)
+        }
+    except LlmConnectionError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error

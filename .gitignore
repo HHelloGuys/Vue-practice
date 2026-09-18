@@ -1,0 +1,24 @@
+# Frontend dependencies and build output
+node_modules/
+dist/
+
+# Python virtual environments and caches
+ai/.venv/
+__pycache__/
+*.py[cod]
+
+# Java/Maven build output
+backend/target/
+
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+
+# IDE and operating-system files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+.DS_Store
+Thumbs.db

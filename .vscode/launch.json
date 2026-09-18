@@ -1,0 +1,64 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // 기존 Vue 화면을 5173 포트로 실행한다.
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "Vue Frontend",
+      "command": "npm run frontend",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      // AI 전용 FastAPI 서버를 8000 포트로 실행한다.
+      "type": "node-terminal",
+      "request": "launch",
+      "name": "FastAPI AI Server",
+      "command": "npm run ai",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      // eGovFramework 메인 백엔드를 Java 디버거로 실행한다.
+      "type": "java",
+      "request": "launch",
+      "name": "eGovFramework Backend",
+      "mainClass": "com.nova.aichat.AiChatBackendApplication",
+      "projectName": "ai-chat-backend",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "ORACLE_URL": "jdbc:oracle:thin:@//localhost:1521/XEPDB1",
+        "ORACLE_USERNAME": "system",
+        "ORACLE_PASSWORD": "${input:oraclePassword}",
+        "JWT_SECRET": "${input:jwtSecret}"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      // F5 한 번으로 Vue, eGovFramework, FastAPI를 모두 실행한다.
+      "name": "전체 실행: Vue + eGovFramework + FastAPI",
+      "configurations": [
+        "Vue Frontend",
+        "FastAPI AI Server",
+        "eGovFramework Backend"
+      ],
+      "stopAll": true
+    }
+  ],
+  "inputs": [
+    {
+      // 입력한 Oracle 비밀번호는 화면에 표시하지 않는다.
+      "id": "oraclePassword",
+      "type": "promptString",
+      "description": "Oracle SYSTEM 비밀번호",
+      "password": true
+    },
+    {
+      // 32바이트 이상 값을 Base64로 인코딩한 JWT 서명키다.
+      "id": "jwtSecret",
+      "type": "promptString",
+      "description": "JWT Base64 비밀키",
+      "password": true
+    }
+  ]
+}
