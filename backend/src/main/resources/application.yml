@@ -1,7 +1,9 @@
+# eGovFramework 내장 웹 서버의 포트를 설정한다.
 server:
   # Vue 개발 서버와 분리된 메인 백엔드 포트
   port: 8080
 
+# 애플리케이션 이름과 Oracle DataSource 연결 정보를 설정한다.
 spring:
   application:
     name: ai-chat-backend
@@ -17,12 +19,21 @@ spring:
       connection-timeout: 5000
       validation-timeout: 3000
 
+# eGovFramework가 호출할 FastAPI AI 서버 주소를 설정한다.
 ai:
   server:
     # eGovFramework만 FastAPI를 호출하며 Vue에는 이 주소를 노출하지 않는다.
     base-url: ${AI_SERVER_BASE_URL:http://localhost:8000}
 
+# JWT 서명 비밀키와 토큰 유효시간을 실행 환경에서 읽는다.
 jwt:
   # Base64 형식의 비밀키는 실행 환경에서만 전달한다.
   secret: ${JWT_SECRET}
   expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
+
+# 문서 분할 크기와 RAG 후보 조회 개수를 설정한다.
+rag:
+  # 1차 RAG의 초기값이며 문서/질문 테스트 결과에 따라 환경변수로 조정한다.
+  chunk-size: ${RAG_CHUNK_SIZE:800}
+  chunk-overlap: ${RAG_CHUNK_OVERLAP:100}
+  candidate-limit: ${RAG_CANDIDATE_LIMIT:100}
