@@ -1,8 +1,15 @@
+/** eGovFramework 채팅 API가 반환하는 답변 형식을 표현한다. */
 export interface ChatResponse {
   answer: string
+  sources: string[]
+  conversationId?: number
 }
 
-export async function requestChatAnswer(message: string): Promise<ChatResponse> {
+/** 질문과 대화 ID를 전송하고 AI 답변을 반환한다. */
+export async function requestChatAnswer(
+  message: string,
+  conversationId?: number
+): Promise<ChatResponse> {
   const accessToken = getAccessToken()
   const headers: Record<string, string> = {
     'Content-Type': 'application/json'
@@ -17,7 +24,7 @@ export async function requestChatAnswer(message: string): Promise<ChatResponse> 
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers,
-    body: JSON.stringify({ message })
+    body: JSON.stringify({ message, conversationId })
   })
 
   if (response.status === 401) {

@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from typing import List
+
+from pydantic import BaseModel, Field
 
 from ai.services.llm import LlmConnectionError, generate_answer
+from ai.services.rag import retrieve
 
 app = FastAPI()
 
@@ -23,6 +26,7 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
+    chunks: List[dict] = Field(default_factory=list)
 
 
 @app.get("/")
@@ -38,8 +42,10 @@ def chat(request: ChatRequest):
 
     try:
         # 실제 답변은 API Key가 필요 없는 로컬 Ollama 모델에서 생성한다.
+        contexts = retrieve(request.message, request.chunks)
         return {
-            "answer": generate_answer(request.message)
+            "answer": generate_answer(request.message, contexts),
+            "sources": list(dict.fromkeys(context.file_name for context in contexts)),
         }
     except LlmConnectionError as error:
         raise HTTPException(status_code=503, detail=str(error)) from error

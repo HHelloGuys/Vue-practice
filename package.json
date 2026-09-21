@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "powershell -ExecutionPolicy Bypass -File backend\\run-local.ps1",
+    "stop": "powershell -ExecutionPolicy Bypass -File backend\\stop-local.ps1",
     "frontend": "vite",
     "ai": "ai\\.venv\\Scripts\\python.exe -m uvicorn ai.main:app --reload",
     "build": "vite build",

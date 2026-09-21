@@ -17,16 +17,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/** 요청의 Bearer JWT를 검증해 Spring Security 인증 객체를 구성한다. */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenService jwtTokenService;
     private final UserRepository userRepository;
 
+    /** 토큰 서비스와 사용자 저장소를 주입받는다. */
     public JwtAuthenticationFilter(JwtTokenService jwtTokenService, UserRepository userRepository) {
         this.jwtTokenService = jwtTokenService;
         this.userRepository = userRepository;
     }
 
+    /** 요청마다 JWT를 확인하고 유효한 사용자만 보안 컨텍스트에 등록한다. */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -44,7 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     );
                 }
             } catch (JwtException | IllegalArgumentException ignored) {
-                // 유효하지 않은 토큰은 인증되지 않은 요청으로 처리한다.
+                // 토큰 없이 온 요청만 게스트로 허용한다. 만료·위조 토큰은 조용히 게스트로 바꾸지 않는다.
+                SecurityContextHolder.clearContext();
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
         filterChain.doFilter(request, response);
